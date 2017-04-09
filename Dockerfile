@@ -19,8 +19,11 @@ RUN cd /tmp \
     && mv druid-0.9.2 /opt/druid \
     && ln -s /opt/druid/druid-0.9.2 /opt/druid/current
 
-WORKDIR /opt/druid
 ADD entrypoint.sh
 ADD conf/ current/conf
 
-ENTRYPOINT /opt/druid/entrypoint.sh
+EXPOSE 8090
+
+USER druid
+WORKDIR /opt/druid
+ENTRYPOINT ["./entrypoint.sh"]

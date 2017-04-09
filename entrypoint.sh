@@ -24,16 +24,41 @@ CLASS_DRUID   = "io.druid.cli.Main"
 
 cd /opt/druid/current
 
-if [ "$1" = 'init']; then
+# if this is the first run, or we ask for a re-init
+if [ "$1" = 'init'] || [! -d "var" ]; then
 	if [ -d "var" ]; then
 		rm -rf var
 	fi
 	bin/init
-	exit 0
+	if [ "$1" = 'init' ]; then
+		exit 0
+	fi
 fi
 
+# services to start
 if [ "$1" = 'historical']; then
-	java $(cat ${JO_HISTORICAL}) | xargs -cp "${CP_COMMON}:${CP_HISTORICAL}:${CP_LIB}:${CP_EXTRA}" ${CLASS_DRUID} server historical
+	JAVA_OPTIONS = $JO_HISTORICAL
+	CLASS_PATH = "$CP_COMMON:$CP_HISTORICAL:$CP_LIB:$CP_EXTRA"
 fi
 
-if []
+if [ "$1" = 'broker']; then
+	JAVA_OPTIONS = $JO_BROKER
+	CLASS_PATH = "$CP_COMMON:$CP_BROKER:$CP_LIB:$CP_EXTRA"
+fi
+
+if [ "$1" = 'coordinator']; then
+	JAVA_OPTIONS = $JO_COORDINATOR
+	CLASS_PATH = "$CP_COMMON:$CP_COORDINATOR:$CP_LIB:$CP_EXTRA"
+fi
+
+if [ "$1" = 'overlord']; then
+	JAVA_OPTIONS = $JO_OVERLORD
+	CLASS_PATH = "$CP_COMMON:$CP_OVERLORD:$CP_LIB:$CP_EXTRA"
+fi
+
+if [ "$1" = 'middleManager']; then
+	JAVA_OPTIONS = $JO_MIDDLEMGR
+	CLASS_PATH = "$CP_COMMON:$CP_MIDDLEMGR:$CP_LIB:$CP_EXTRA"
+fi
+
+exec java $(cat $JAVA_OPTIONS) | xargs -cp $CLASS_PATH $CLASS_DRUID server $1

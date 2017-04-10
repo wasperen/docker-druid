@@ -1,0 +1,50 @@
+broker:
+  image: druid
+  restart: always
+  links:
+    - coordinator:coordinator
+    - historical:historical
+    - middleManager:middleManager
+    - overlord:overlord
+  command: broker
+
+coordinator:
+  image: druid
+  restart: always
+  links:
+    - broker:broker
+    - historical:historical
+    - middleManager:middleManager
+    - overlord:overlord
+  command: coordinator
+
+historical:
+  image: druid
+  restart: always
+  links:
+    - coordinator:coordinator
+    - broker:broker
+    - middleManager:middleManager
+    - overlord:overlord
+  command: historical
+
+middleManager:
+  image: druid
+  restart: always
+  links:
+    - coordinator:coordinator
+    - historical:historical
+    - broker:broker
+    - overlord:overlord
+  command: middleManager
+
+overlord:
+  image: druid
+  restart: always
+  links:
+    - coordinator:coordinator
+    - historical:historical
+    - middleManager:middleManager
+    - broker:broker
+  command: overlord
+

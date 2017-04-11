@@ -27,7 +27,14 @@ RUN cd /tmp \
     && chmod +x ${DRUID_HOME}/entrypoint.sh \
     && chown druid: -R ${DRUID_HOME}
 
-EXPOSE 8090
+RUN cd /tmp\
+    && curl -O http://static.druid.io/artifacts/releases/mysql-metadata-storage-0.9.2.tar.gz \
+    && tar xzf mysql-metadata-storage-0.9.2.tar.gz \
+    && mv mysql-metadata-storage ${DRUID_HOME}/current/extensions
+
+ADD common.runtime.properties /opt/druid/current/conf/druid/_common
+
+EXPOSE 8081 8082 8083 8084 8088 8090 8091 8100-8199
 
 USER druid
 WORKDIR ${DRUID_HOME}/current

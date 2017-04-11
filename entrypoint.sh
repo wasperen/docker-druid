@@ -29,11 +29,11 @@ if [ "$1" = "init" ] || [ ! -d "var" ] ; then
 	fi
 fi
 
-JAVA_OPTIONS="$CONF_DIR/$ENVIRONMENT/$1/jvm.conf"
+JAVA_OPTIONS="$CONF_DIR/$ENVIRONMENT/$1/jvm.config"
 CLASS_PATH="$CP_COMMON:$CONF_DIR/$ENVIRONMENT/$1:$CP_LIB:$CP_EXTRA"
 if [ -z ${DEBUG+x} ] ; then
 	echo $JAVA_OPTIONS
 	echo $CLASS_PATH
 fi
 
-exec java $(cat $JAVA_OPTIONS | xargs) -cp $CLASS_PATH $CLASS_DRUID server $1
+exec java $(cat $JAVA_OPTIONS | xargs) $JAVA_EXTRA_OPTIONS -cp $CLASS_PATH $CLASS_DRUID server $1

@@ -23,7 +23,7 @@ Using `docker-compose` you can spin up the whole cluster on a docker machine (or
 
 This will bring up five containers -- one for each of the services -- and connect them up within a virtual network.
 
-Use `docker-compose down' to bring the cluster back down and destroy the containers. (NB: you will lose any data if you have not taken additional measures to prevent this. For instance by creating volumes or hooking up with HDFS.)
+Use `docker-compose down` to bring the cluster back down and destroy the containers. (NB: you will lose any data if you have not taken additional measures to prevent this. For instance by creating volumes or hooking up with HDFS.)
 
 ## volumes
 To persist storage between container destroys, you will need to connect the following volumes to persistent storage:

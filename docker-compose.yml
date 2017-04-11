@@ -1,50 +1,87 @@
-broker:
-  image: druid
-  restart: always
-  links:
-    - coordinator:coordinator
-    - historical:historical
-    - middleManager:middleManager
-    - overlord:overlord
-  command: broker
-
-coordinator:
-  image: druid
-  restart: always
-  links:
-    - broker:broker
-    - historical:historical
-    - middleManager:middleManager
-    - overlord:overlord
-  command: coordinator
-
-historical:
-  image: druid
-  restart: always
-  links:
-    - coordinator:coordinator
-    - broker:broker
-    - middleManager:middleManager
-    - overlord:overlord
-  command: historical
-
-middleManager:
-  image: druid
-  restart: always
-  links:
-    - coordinator:coordinator
-    - historical:historical
-    - broker:broker
-    - overlord:overlord
-  command: middleManager
-
-overlord:
-  image: druid
-  restart: always
-  links:
-    - coordinator:coordinator
-    - historical:historical
-    - middleManager:middleManager
-    - broker:broker
-  command: overlord
-
+version: '3'
+services:
+  zookeeper:
+    image: zookeeper:3.4
+    restart: always
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    environment:
+      - ZOO_ID=1
+      - ZOO_SERVERS=zookeeper
+  
+  mysql:
+    image: mariadb:10
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123plop321
+      - MYSQL_DATABASE=druid
+      - MYSQL_USER=druid
+      - MYSQL_PASSWORD=druid
+    command: --character-set-server=utf8 --collation-server=utf8_unicode_ci
+  
+  broker:
+    image: druid
+    restart: always
+    ports:
+      - 8082:8082
+    environment:
+      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+    links:
+      - zookeeper:zookeeper
+      - mysql:mysql
+    command: broker
+  
+  coordinator:
+    image: druid
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+    links:
+      - zookeeper:zookeeper
+      - mysql:mysql
+    command: coordinator
+  
+  historical:
+    image: druid
+    restart: always
+    ports:
+      - 8083:8083
+    environment:
+      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+    links:
+      - zookeeper:zookeeper
+      - mysql:mysql
+    command: historical
+  
+  middleManager:
+    image: druid
+    restart: always
+    ports:
+      - 8091:8091
+      - 8100-8199:8100-8199
+    environment:
+      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+    links:
+      - zookeeper:zookeeper
+      - mysql:mysql
+    command: middleManager
+  
+  overlord:
+    image: druid
+    restart: always
+    ports:
+      - 8090:8090
+    environment:
+      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+    links:
+      - zookeeper:zookeeper
+      - mysql:mysql
+    command: overlord
+  
+  

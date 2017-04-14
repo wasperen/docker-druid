@@ -26,6 +26,8 @@ services:
   broker:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8082:8082
     environment:
@@ -38,6 +40,8 @@ services:
   coordinator:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8081:8081
     environment:
@@ -50,6 +54,8 @@ services:
   historical:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8083:8083
     environment:
@@ -62,6 +68,8 @@ services:
   middleManager:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8091:8091
       - 8100-8199:8100-8199
@@ -75,6 +83,8 @@ services:
   overlord:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8090:8090
     environment:
@@ -83,5 +93,6 @@ services:
       - zookeeper:zookeeper
       - mysql:mysql
     command: overlord
-  
-  
+
+volumes:
+  druid_var:

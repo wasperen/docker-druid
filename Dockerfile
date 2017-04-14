@@ -32,6 +32,11 @@ RUN cd /tmp\
     && tar xzf mysql-metadata-storage-0.9.2.tar.gz \
     && mv mysql-metadata-storage ${DRUID_HOME}/current/extensions
 
+VOLUME ${DRUID_HOME}/current/var
+
+RUN mkdir ${DRUID_HOME}/current/var \
+    && chown druid: ${DRUID_HOME}/current/var
+
 ADD common.runtime.properties /opt/druid/current/conf/druid/_common
 
 EXPOSE 8081 8082 8083 8084 8088 8090 8091 8100-8199

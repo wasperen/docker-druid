@@ -15,7 +15,7 @@ CP_EXTRA=""
 CLASS_DRUID="io.druid.cli.Main"
 
 # if this is the first run, or we ask for a re-init
-if [ "$1" = "init" ] || [ ! -f "_init" ] ; then
+if [ "$1" = "init" ] || [ ! -f "var/_init" ] ; then
 	if [ -d "var" ]; then
 		rm -rf var/*
 	fi
@@ -23,7 +23,7 @@ if [ "$1" = "init" ] || [ ! -f "_init" ] ; then
 		rm -rf log
 	fi
 	bin/init
-	touch _init
+	touch var/_init
 	if [ "$1" = "init" ]; then
 		exit 0
 	fi

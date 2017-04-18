@@ -26,10 +26,12 @@ services:
   broker:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8082:8082
     environment:
-      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+      - JAVA_EXTRA_OPTIONS=-Xmx4g -Xms1m
     links:
       - zookeeper:zookeeper
       - mysql:mysql
@@ -38,10 +40,12 @@ services:
   coordinator:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8081:8081
     environment:
-      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+      - JAVA_EXTRA_OPTIONS=-Xmx2g -Xms1m
     links:
       - zookeeper:zookeeper
       - mysql:mysql
@@ -50,10 +54,12 @@ services:
   historical:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8083:8083
     environment:
-      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+      - JAVA_EXTRA_OPTIONS=-Xmx4g -Xms1m
     links:
       - zookeeper:zookeeper
       - mysql:mysql
@@ -62,11 +68,13 @@ services:
   middleManager:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8091:8091
       - 8100-8199:8100-8199
     environment:
-      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+      - JAVA_EXTRA_OPTIONS=-Xmx64m -Xms64m
     links:
       - zookeeper:zookeeper
       - mysql:mysql
@@ -75,13 +83,16 @@ services:
   overlord:
     image: druid
     restart: always
+    volumes:
+      - druid_var:/opt/druid/current/var
     ports:
       - 8090:8090
     environment:
-      - JAVA_EXTRA_OPTIONS=-Xmx512m -Xms1m
+      - JAVA_EXTRA_OPTIONS=-Xmx1g -Xms1m
     links:
       - zookeeper:zookeeper
       - mysql:mysql
     command: overlord
-  
-  
+
+volumes:
+  druid_var:

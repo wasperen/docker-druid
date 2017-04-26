@@ -1,5 +1,5 @@
 FROM centos:7
-MAINTAINER willem@van.asperen.org Willem van Asperen
+MAINTAINER Willem van Asperen
 
 ENV DRUID_HOME /opt/druid
 

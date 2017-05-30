@@ -38,8 +38,9 @@ RUN mkdir ${DRUID_HOME}/current/var \
 VOLUME ${DRUID_HOME}/current/var
 
 ADD common.runtime.properties /opt/druid/current/conf/druid/_common
+ADD quickstart/tranquility-server.json /opt/druid/current/conf/tranquility-server.json
 
-EXPOSE 8081 8082 8083 8084 8088 8090 8091 8100-8199
+EXPOSE 8081 8082 8083 8084 8088 8090 8091 8100-8199 8200
 
 USER druid
 WORKDIR ${DRUID_HOME}/current

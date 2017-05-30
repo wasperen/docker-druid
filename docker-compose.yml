@@ -94,5 +94,18 @@ services:
       - mysql:mysql
     command: overlord
 
+  tranquility:
+    image: tranquility
+    restart: always
+    ports:
+      - 8200:8200
+    links:
+      - zookeeper:zookeeper
+      - broker:broker
+      - coordinator:coordinator
+      - historical:historical
+      - middleManager:middleManager
+      - overlord:overlord
+
 volumes:
   druid_var:
